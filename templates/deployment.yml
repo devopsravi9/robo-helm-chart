@@ -1,0 +1,31 @@
+#deployment not supports parameters
+#we have to write same code for each app those many times.
+#so we came with HELM CHARTS.
+
+#helm install <any name that we want give  for that job> <location of helm directory> -f <name of app>
+# helm install name ./helm -f cart.yml
+
+# ./helm containd deploymentset, configmao etc. cart.yaml is used to send variables
+
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.appName }}
+  labels:
+    app: {{ .Values.appName }}
+spec:
+  # modify replicas according to your case
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.appName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appName }}
+    spec:
+      containers:
+      - name: {{ .Values.appName }}
+        image: public.ecr.aws/u3t4a1d0/{{ .Values.appName }}:latest
