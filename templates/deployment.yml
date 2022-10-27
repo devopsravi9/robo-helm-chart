@@ -15,6 +15,7 @@ metadata:
   name: {{ .Values.appName }}
   labels:
     app: {{ .Values.appName }}
+    ephoc: "{{ .Values.ephoc }}"
 spec:
   # modify replicas according to your case
   replicas: 1
@@ -24,8 +25,12 @@ spec:
   template:
     metadata:
       labels:
+        ephoc: "{{ .Values.ephoc }}"
         app: {{ .Values.appName }}
     spec:
       containers:
       - name: {{ .Values.appName }}
         image: public.ecr.aws/u3t4a1d0/{{ .Values.appName }}:latest
+        envFrom :
+        - configMapRef :
+            name : {{ .Values.appName }}
